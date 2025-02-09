@@ -3,7 +3,7 @@ USER root
 RUN apt-get update && apt-get install -y lsb-release
 # Added this line to install ping in the container
 RUN apt update && apt install -y iputils-ping
-CMD ["ping", "8.8.8.8"]
+#CMD ["ping", "8.8.8.8"]
 RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
   https://download.docker.com/linux/debian/gpg
 RUN echo "deb [arch=$(dpkg --print-architecture) \
