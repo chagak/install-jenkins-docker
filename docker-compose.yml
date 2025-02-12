@@ -35,6 +35,37 @@ services:
     networks:
       - jenkins
 
+  sonar:
+    image: sonarqube:lts
+    container_name: sonar
+    restart: always
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+      - SONAR_JDBC_URL=jdbc:postgresql://sonar-db:5432/sonarqube
+      - SONAR_JDBC_USERNAME=sonarqube
+      - SONAR_JDBC_PASSWORD=sonarqube
+    volumes:
+      - sonar_data:/opt/sonarqube/data
+      - sonar_extensions:/opt/sonarqube/extensions
+      - sonar_logs:/opt/sonarqube/logs
+    ports:
+      - "9000:9000"
+    networks:
+      - jenkins
+
+  sonar-db:
+    image: postgres:13
+    container_name: sonar-db
+    restart: always
+    environment:
+      - POSTGRES_USER=sonarqube
+      - POSTGRES_PASSWORD=sonarqube
+      - POSTGRES_DB=sonarqube
+    volumes:
+      - sonar_db:/var/lib/postgresql/data
+    networks:
+      - jenkins
+
 networks:
   jenkins:
     driver: bridge
@@ -42,3 +73,7 @@ networks:
 volumes:
   jenkins-docker-certs:
   jenkins-data:
+  sonar_data:
+  sonar_extensions:
+  sonar_logs:
+  sonar_db:
